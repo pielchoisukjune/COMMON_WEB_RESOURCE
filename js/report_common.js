@@ -8,58 +8,6 @@ var thumnail_icon = {
 	, "Fime.vn" : "red edit outline"
 	, "Google Top SEO" : "red google outline"
 };
-window.addEventListener('DOMContentLoaded', function( e ){
-	//debugger;
-	var target_month = "<!=TARGET_MONTH=!>월";
-	if( window.document.getElementById("target_month") )
-	{
-		var title_month = window.document.getElementById("target_month");
-		title_month.innerText = target_month;
-		title_month.style.color = "rgba(255, 255, 255,10)";
-	}
-
-	drawTable__monthly_marketing_plan( "monthly_planning", monthly_planning_data, target_month );
-	drawCards__monthly_facebook_stastics( "monthly_facebook_stastics", monthly_facebook_stastic_data, target_month );
-	drawCards__make_facebook_location_html( "facebook_map_cards", mapData, target_month );
-	drawCards__make_kols_html( "kols_cards", kols_data, target_month )
-	drawTable__make_statistic_google_html( "statistic_google", google_statistic_data, target_month )
-	drawCards__google_seo_list( "google_seo_list_data", google_seo_list_data, target_month )
-	drawCards__make_marketing_list( "marketing_list", marketing_list_data, target_month )
-	drawCards__make_ads_total_statistic( "ads_total", ads_total_data, target_month )
-
-	var arr = window.document.getElementsByTagName("iframe");
-	arr.forEach(function(item){
-
-		item.parentElement.firstElementChild.style.height = "0px";
-		item.parentElement.firstElementChild.style.minHeight = "0px";
-
-		if( item.height == "266" ) return;
-
-		var w00 = item.parentElement.offsetWidth;
-		var w01 = item.offsetWidth;
-		var h00 = ( item.offsetHeight * item.parentElement.offsetWidth ) / item.offsetWidth;
-		var h01 = item.offsetHeight;
-
-		item.width = w00;
-		item.height = h00;
-
-	})
-
-	var thumb_imgs_html = window.document.getElementsByClassName("ads_list_thumb");
-	thumb_imgs_html.forEach(function(item){
-
-		if( item.height == "266" ) return;
-
-		var w00 = item.parentElement.offsetWidth;
-		var w01 = item.offsetWidth;
-		var h00 = ( item.offsetHeight * item.parentElement.offsetWidth ) / item.offsetWidth;
-		var h01 = item.offsetHeight;
-
-		item.width = w00;
-		item.height = h00;
-
-	})
-});
 
 /*
  *
