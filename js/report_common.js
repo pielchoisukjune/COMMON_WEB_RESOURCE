@@ -68,7 +68,7 @@
 	window.PIEL.REPORT.pieChartAge = function( domId, titles, arr ){
 		if( arr.length == 0 )
 		{
-			return emptyPieChart( domId, titles[ 0 ] );
+			return window.PIEL.REPORT.emptyPieChart( domId, titles[ 0 ] );
 		}
 
 		var chart = am4core.create(domId, am4charts.PieChart);
