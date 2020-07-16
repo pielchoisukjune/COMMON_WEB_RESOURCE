@@ -1,5 +1,10 @@
 (function(){
-	var thumnail_icon = {
+
+	window.PIEL = {};
+	window.PIEL.REPORT= {};
+	window.PIEL.REPORT.FUNCS = {};
+
+	window.PIEL.REPORT.thumnail_icon = {
 		"뷰티유튜버" : "red youtube"
 		, "페이스북그룹" : "blue facebook square"
 		, "페이스북" : "blue facebook square"
@@ -14,7 +19,7 @@
 	/*
 	 *
 	 */
-	var emptyPieChart = function( domId, title ){
+	window.PIEL.REPORT.emptyPieChart = function( domId, title ){
 		var chart = am4core.create( domId, am4charts.PieChart);
 		var title03 = chart.titles.create();
 		title03.text = title;
@@ -60,7 +65,7 @@
 	/*
 	 *
 	 */
-	var pieChartAge = function( domId, titles, arr ){
+	window.PIEL.REPORT.pieChartAge = function( domId, titles, arr ){
 		if( arr.length == 0 )
 		{
 			return emptyPieChart( domId, titles[ 0 ] );
@@ -130,7 +135,7 @@
 	/*
 	 *
 	 */
-	var barChartTime = function( domId, options, arr ){
+	window.PIEL.REPORT.barChartTime = function( domId, options, arr ){
 
 	// Create chart instance
 		var chart = am4core.create( domId , am4charts.XYChart);
@@ -210,7 +215,7 @@
 	/*
 	 *
 	 */
-	var drawVisualization = function(){
+	window.PIEL.REPORT.drawVisualization = function(){
 
 		var data = google.visualization.arrayToDataTable( mapData );
 
@@ -235,7 +240,7 @@
 	/*
 	 * 월간집행통계작성;
 	 */
-	var drawTable__monthly_marketing_plan = function( domId, data, target_month ){
+	window.PIEL.REPORT.drawTable__monthly_marketing_plan = function( domId, data, target_month ){
 		
 		var tDom = window.document.getElementById( domId );
 
@@ -298,7 +303,7 @@
 	/*
 	 *
 	 */
-	var drawCards__monthly_facebook_stastics = function( domId, data, target_month ){
+	window.PIEL.REPORT.drawCards__monthly_facebook_stastics = function( domId, data, target_month ){
 		
 		var tDom = window.document.getElementById( domId );
 		var _tStr = `<div class="card"><div class="content"><div class="header" style="font-size : 12px;"><!=LABEL=!></div><div class="description" style="font-size : 20px;color:#000;"><b><!=VALUE=!></b></div></div></div>`;
@@ -342,7 +347,7 @@
 	//-------------------------------------------------------;
 	// 페이스북지역통계카드생성;
 	//-------------------------------------------------------;
-	var drawCards__make_facebook_location_html = function( domId, data, target_month ){
+	window.PIEL.REPORT.drawCards__make_facebook_location_html = function( domId, data, target_month ){
 
 		var tDom = window.document.getElementById( domId );
 		var _tStr = `<div class="card"><div class="content"><div class="header" style="font-size : 12px;"><!=city=!></div><div class="description" style="font-size : 11px;">도달 : <!=reach=!><br>노출 : <!=view=!></div></div></div>`;
@@ -367,7 +372,7 @@
 	/*
 	 * KOL카드생성
 	 */
-	var drawCards__make_kols_html = function( domId, data, target_month ){
+	window.PIEL.REPORT.drawCards__make_kols_html = function( domId, data, target_month ){
 		var gender_icon = {
 			"남" : "blue mars stroke vertical"
 			, "여" : "red venus"
@@ -419,7 +424,7 @@
 	//-------------------------------------------------------;
 	//구글전체통계 생성;
 	//-------------------------------------------------------;
-	var drawTable__make_statistic_google_html = function( domId, data, target_month ){
+	window.PIEL.REPORT.drawTable__make_statistic_google_html = function( domId, data, target_month ){
 
 		var tDom = window.document.getElementById( domId );
 		var _tStr = `<table class="ui very compact celled table"><thead><!=TABLE_HEAD=!></thead><tbody><!=TABLE_BODY=!></tbody></table>`;	
@@ -472,7 +477,7 @@
 	//-------------------------------------------------------;
 	//구글 SEO 리스트카드생성;
 	//-------------------------------------------------------;
-	var make_google_seo_html = function( arr ){
+	window.PIEL.REPORT.make_google_seo_html = function( arr ){
 		
 		var _tStr = `
 		<div class="card">
@@ -584,7 +589,7 @@
 	//-------------------------------------------------------;
 	// 구글 SEO 리스트생성;
 	//-------------------------------------------------------;
-	var drawCards__google_seo_list = function( domId, data, target_month ){
+	window.PIEL.REPORT.drawCards__google_seo_list = function( domId, data, target_month ){
 
 		var tDom = window.document.getElementById( domId );
 		if( !tDom ) return;
@@ -611,7 +616,7 @@
 	//-------------------------------------------------------;
 	//마케팅리스트카드생성;
 	//-------------------------------------------------------;
-	var make_marketing_list_html = function( arr ){
+	window.PIEL.REPORT.make_marketing_list_html = function( arr ){
 		
 		var _tStr = `
 		<div class="card">
@@ -723,7 +728,7 @@
 	//-------------------------------------------------------;
 	// 광고집행리스트생성;
 	//-------------------------------------------------------;
-	var drawCards__make_marketing_list = function( domId, data, target_month ){
+	window.PIEL.REPORT.drawCards__make_marketing_list = function( domId, data, target_month ){
 
 		var tDom = window.document.getElementById( domId );
 		if( !tDom ) return;
@@ -750,7 +755,7 @@
 	//-------------------------------------------------------;
 	//마케팅집행 통계 생성;
 	//-------------------------------------------------------;
-	var drawCards__make_ads_total_statistic = function( domId, data, target_month ){
+	window.PIEL.REPORT.drawCards__make_ads_total_statistic = function( domId, data, target_month ){
 		
 		var tDom = window.document.getElementById( domId );
 		var _tStr = `<div class="card"><div class="content"><div class="header" style="font-size : 12px;"><!=LABEL=!></div><div class="description" style="font-size : 20px;color:#000;"><b><!=VALUE=!></b></div></div></div>`;
@@ -772,13 +777,13 @@
 	/*
 	 * 숫자에3자리마다 콤마를 직어주는 함수;
 	 */
-	var numberWithCommas = function(x) {
+	window.PIEL.REPORT.numberWithCommas = function(x) {
 		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
 	/*
 	 *
 	 */
-	var pad = function(n, width){
+	window.PIEL.REPORT.pad = function(n, width){
 	  n = n + '';
 	  return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
 	}
