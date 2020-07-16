@@ -335,7 +335,7 @@
 				if( use_label.indexOf( s ) != -1 )
 				{
 					_html = _tStr.replace( "<!=LABEL=!>", s  )
-						.replace( "<!=VALUE=!>", numberWithCommas( so ) );
+						.replace( "<!=VALUE=!>", window.PIEL.REPORT.numberWithCommas( so ) );
 					r += _html + "\n"
 				}
 			}
@@ -360,8 +360,8 @@
 			io = data[ i ];
 
 			_html =  _tStr.replace( "<!=city=!>" , io[0].f )
-			.replace( "<!=reach=!>" , numberWithCommas( io[1] ) )
-			.replace( "<!=view=!>" , numberWithCommas ( io[2] ) );
+			.replace( "<!=reach=!>" , window.PIEL.REPORT.numberWithCommas( io[1] ) )
+			.replace( "<!=view=!>" , window.PIEL.REPORT.numberWithCommas ( io[2] ) );
 			r += _html + "\n";
 
 		}
@@ -413,7 +413,7 @@
 				.replace( "<!=YOUTUBE_ICON=!>", _youtube_icon_html )
 				.replace( "<!=INSTAGRAM_ICON=!>",_instagram_icon_html )
 				.replace( "<!=GENDER_ICON=!>", gender_icon[ io[ "성별" ] ] )
-				.replace( "<!=FOLLOWER=!>", numberWithCommas( io[ "팔로워" ] ) );
+				.replace( "<!=FOLLOWER=!>", window.PIEL.REPORT.numberWithCommas( io[ "팔로워" ] ) );
 
 			r += _html + "\n"
 		}
@@ -543,11 +543,11 @@
 			var _view_col = "";
 
 			if( io[ "업데이트날짜" ] ) _update_col = update_col.replace( "<!=DATE=!>", io[ "업데이트날짜" ] )
-			if( io[ "조회건수" ] ) _view_col = view_col.replace( "<!=CNT_VIEW=!>", numberWithCommas( io[ "조회건수" ] ) )
-	//		if( io[ "클릭률" ] ) _click_col = click_col.replace( "<!=CNT_CLICK=!>", numberWithCommas( io[ "클릭률" ] ) )
-	//		if( io[ "댓글수" ] ) _comment_col = comment_col.replace( "<!=CNT_COMMENT=!>", numberWithCommas( io[ "댓글수" ] ) )
-	//		if( io[ "좋아요" ] ) _like_col = like_col.replace( "<!=CNT_LIKE=!>", numberWithCommas( io[ "좋아요" ] ) )
-	//		if( io[ "공유" ] ) _share_col = share_col.replace( "<!=CNT_SHARE=!>", numberWithCommas( io[ "공유" ] ) )
+			if( io[ "조회건수" ] ) _view_col = view_col.replace( "<!=CNT_VIEW=!>", window.PIEL.REPORT.numberWithCommas( io[ "조회건수" ] ) )
+	//		if( io[ "클릭률" ] ) _click_col = click_col.replace( "<!=CNT_CLICK=!>", window.PIEL.REPORT.numberWithCommas( io[ "클릭률" ] ) )
+	//		if( io[ "댓글수" ] ) _comment_col = comment_col.replace( "<!=CNT_COMMENT=!>", window.PIEL.REPORT.numberWithCommas( io[ "댓글수" ] ) )
+	//		if( io[ "좋아요" ] ) _like_col = like_col.replace( "<!=CNT_LIKE=!>", window.PIEL.REPORT.numberWithCommas( io[ "좋아요" ] ) )
+	//		if( io[ "공유" ] ) _share_col = share_col.replace( "<!=CNT_SHARE=!>", window.PIEL.REPORT.numberWithCommas( io[ "공유" ] ) )
 
 			var thumb_url = thumb.replace( "<!=THUMBNAIL=!>", io[ "이미지" ] );
 			var iframe_url = "";
@@ -682,11 +682,11 @@
 			var _view_col = "";
 
 			if( io[ "업데이트날짜" ] ) _update_col = update_col.replace( "<!=DATE=!>", io[ "업데이트날짜" ] )
-			if( io[ "조회건수" ] ) _view_col = view_col.replace( "<!=CNT_VIEW=!>", numberWithCommas( io[ "조회건수" ] ) )
-			if( io[ "클릭률" ] ) _click_col = click_col.replace( "<!=CNT_CLICK=!>", numberWithCommas( io[ "클릭률" ] ) )
-			if( io[ "댓글수" ] ) _comment_col = comment_col.replace( "<!=CNT_COMMENT=!>", numberWithCommas( io[ "댓글수" ] ) )
-			if( io[ "좋아요" ] ) _like_col = like_col.replace( "<!=CNT_LIKE=!>", numberWithCommas( io[ "좋아요" ] ) )
-			if( io[ "공유" ] ) _share_col = share_col.replace( "<!=CNT_SHARE=!>", numberWithCommas( io[ "공유" ] ) )
+			if( io[ "조회건수" ] ) _view_col = view_col.replace( "<!=CNT_VIEW=!>", window.PIEL.REPORT.numberWithCommas( io[ "조회건수" ] ) )
+			if( io[ "클릭률" ] ) _click_col = click_col.replace( "<!=CNT_CLICK=!>", window.PIEL.REPORT.numberWithCommas( io[ "클릭률" ] ) )
+			if( io[ "댓글수" ] ) _comment_col = comment_col.replace( "<!=CNT_COMMENT=!>", window.PIEL.REPORT.numberWithCommas( io[ "댓글수" ] ) )
+			if( io[ "좋아요" ] ) _like_col = like_col.replace( "<!=CNT_LIKE=!>", window.PIEL.REPORT.numberWithCommas( io[ "좋아요" ] ) )
+			if( io[ "공유" ] ) _share_col = share_col.replace( "<!=CNT_SHARE=!>", window.PIEL.REPORT.numberWithCommas( io[ "공유" ] ) )
 
 			var thumb_url = thumb.replace( "<!=THUMBNAIL=!>", io[ "이미지" ] );
 			var iframe_url = "";
@@ -768,7 +768,7 @@
 		for( s in data ){
 			so = data[ s ];
 			_html = _tStr.replace( "<!=LABEL=!>", s  )
-				.replace( "<!=VALUE=!>", numberWithCommas( so )  );
+				.replace( "<!=VALUE=!>", window.PIEL.REPORT.numberWithCommas( so )  );
 			r += _html + "\n"
 		}
 		tDom.innerHTML = r;
