@@ -1,5 +1,5 @@
 (function(){
-
+	console.log( " Start - window.PIEL" )
 	window.PIEL = {};
 	window.PIEL.REPORT= {};
 	window.PIEL.REPORT.FUNCS = {};
