@@ -1,14 +1,15 @@
 (function(){
 	console.log( " Start - window.PIEL" )
-			console.log( " Start - window.PIEL" )
-			console.log( " Start - window.PIEL" )
-			console.log( " Start - window.PIEL" )
-			console.log( " Start - window.PIEL" )
-	window.PIEL = {};
-	window.PIEL.REPORT= {};
-	window.PIEL.REPORT.FUNCS = {};
+	console.log( " Start - window.PIEL" )
+	console.log( " Start - window.PIEL" )
+	console.log( " Start - window.PIEL" )
+	console.log( " Start - window.PIEL" )
 
-	window.PIEL.REPORT.thumnail_icon = {
+	window.PIEL = {};
+	window.PIEL.PLANNING= {};
+	window.PIEL.PLANNING.FUNCS = {};
+
+	window.PIEL.PLANNING.thumnail_icon = {
 		"뷰티유튜버" : "red youtube"
 		, "페이스북그룹" : "blue facebook square"
 		, "페이스북" : "blue facebook square"
@@ -23,7 +24,7 @@
 	/*
 	 *
 	 */
-	window.PIEL.REPORT.emptyPieChart = function( domId, title ){
+	window.PIEL.PLANNING.emptyPieChart = function( domId, title ){
 		var chart = am4core.create( domId, am4charts.PieChart);
 		var title03 = chart.titles.create();
 		title03.text = title;
@@ -58,7 +59,7 @@
 		series.ticks.template.propertyFields.disabled = "disabled";
 
 		chart.events.on("ready", function(e){
-			//debugger;	
+
 			var pie_chart_loader = window.document.getElementById( domId + "_loader" );
 			pie_chart_loader.classList.remove("active");
 		});
@@ -69,10 +70,10 @@
 	/*
 	 *
 	 */
-	window.PIEL.REPORT.pieChartAge = function( domId, titles, arr ){
+	window.PIEL.PLANNING.pieChartAge = function( domId, titles, arr ){
 		if( arr.length == 0 )
 		{
-			return window.PIEL.REPORT.emptyPieChart( domId, titles[ 0 ] );
+			return window.PIEL.PLANNING.emptyPieChart( domId, titles[ 0 ] );
 		}
 
 		var chart = am4core.create(domId, am4charts.PieChart);
@@ -128,7 +129,76 @@
 		}
 
 		chart.events.on("ready", function(e){
-			//debugger;	
+			var pie_chart_loader = window.document.getElementById( domId + "_loader" );
+			pie_chart_loader.classList.remove("active");
+		});
+		
+		return chart;
+	}
+	
+	/*
+	 *
+	 */
+	window.PIEL.PLANNING.pieChartStandardLengend = function( domId, titles, arr ){
+		if( arr.length == 0 )
+		{
+			return window.PIEL.PLANNING.emptyPieChart( domId, titles[ 0 ] );
+		}
+
+		var chart = am4core.create(domId, am4charts.PieChart);
+		
+		if( titles.length > 1 )
+		{
+			var title01 = chart.titles.create();
+			title01.text = titles[ 1 ];
+			title01.fontSize = 14;
+			//title01.marginBottom = 40;
+			title01.marginTop = 10;
+		}
+
+		var title00 = chart.titles.create();
+		title00.text = titles[ 0 ];
+		title00.fontSize = 25;
+		//title00.marginBottom = 30;
+		title00.marginTop = 10;
+		
+		//loading;
+		chart.preloader.disabled = true;
+		chart.legend = new am4charts.Legend();
+
+		chart.data = arr;
+
+		// Add and configure Series
+		var pieSeries00 = chart.series.push(new am4charts.PieSeries());
+
+		pieSeries00.dataFields.value = "value";
+		pieSeries00.dataFields.category = "ages";
+		pieSeries00.slices.template.stroke = am4core.color("#fff");
+		pieSeries00.slices.template.strokeOpacity = 1;
+
+		// This creates initial animation
+		pieSeries00.hiddenState.properties.opacity = 1;
+		pieSeries00.hiddenState.properties.endAngle = -90;
+		pieSeries00.hiddenState.properties.startAngle = -90;
+		pieSeries00.labels.template.fontSize = 10;
+
+		chart.hiddenState.properties.radius = am4core.percent(70);
+
+		pieSeries00.ticks.template.events.on("ready", hideSmall);
+		pieSeries00.ticks.template.events.on("visibilitychanged", hideSmall);
+		pieSeries00.labels.template.events.on("ready", hideSmall);
+		pieSeries00.labels.template.events.on("visibilitychanged", hideSmall);
+
+		function hideSmall(ev) {
+		  if (ev.target.dataItem && (ev.target.dataItem.values.value.percent == 0)) {
+			ev.target.hide();
+		  }
+		  else {
+			ev.target.show();
+		  }
+		}
+
+		chart.events.on("ready", function(e){
 			var pie_chart_loader = window.document.getElementById( domId + "_loader" );
 			pie_chart_loader.classList.remove("active");
 		});
@@ -139,7 +209,7 @@
 	/*
 	 *
 	 */
-	window.PIEL.REPORT.barChartTime = function( domId, options, arr ){
+	window.PIEL.PLANNING.barChartTime = function( domId, options, arr ){
 
 	// Create chart instance
 		var chart = am4core.create( domId , am4charts.XYChart);
@@ -151,7 +221,6 @@
 
 		chart.legend = new am4charts.Legend();
 		// Export
-		debugger;
 		chart.exporting.menu = new am4core.ExportMenu();
 
 		/* Create axes */
@@ -208,7 +277,6 @@
 		chart.data = arr;
 
 		chart.events.on("ready", function(e){
-			//debugger;	
 			var bar_chart_loader = window.document.getElementById( domId + "_loader" );
 			bar_chart_loader.classList.remove("active");
 		});
@@ -219,14 +287,68 @@
 	/*
 	 *
 	 */
-	window.PIEL.REPORT.drawVisualization = function( mapData ){
+	window.PIEL.PLANNING.barChartStandard = function( domId, options, arr ){
+	
+	// Create chart instance
+		var chart = am4core.create( domId , am4charts.XYChart);
+
+		chart.legend = new am4charts.Legend();
+		// Export
+		chart.exporting.menu = new am4core.ExportMenu();
+
+		var title00 = chart.titles.create();
+		title00.text = options.title;
+		title00.fontSize = 25;
+		//title00.marginBottom = 30;
+		title00.marginTop = 10;
+
+		/* Create axes */
+		var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+		categoryAxis.dataFields.category = options.label0;
+		categoryAxis.renderer.minGridDistance = 30;
+		categoryAxis.renderer.labels.template.horizontalCenter = "right";
+		categoryAxis.renderer.labels.template.verticalCenter = "middle";
+		categoryAxis.renderer.labels.template.rotation = 300;
+		categoryAxis.renderer.labels.template.fontSize = 11;
+
+		/* Create value axis */
+		var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+
+		/* Create series */
+		var columnSeries = chart.series.push(new am4charts.ColumnSeries());
+		columnSeries.name = options.label1;
+		columnSeries.dataFields.valueY = options.label1;
+		columnSeries.dataFields.categoryX = options.label0;
+
+		columnSeries.columns.template.tooltipText = "[#fff font-size: 15px]{name} in {categoryX}:\n[/][#fff font-size: 20px]{valueY}[/] [#fff]{additional}[/]"
+		columnSeries.columns.template.propertyFields.fillOpacity = "fillOpacity";
+		columnSeries.columns.template.propertyFields.stroke = "stroke";
+		columnSeries.columns.template.propertyFields.strokeWidth = "strokeWidth";
+		columnSeries.columns.template.propertyFields.strokeDasharray = "columnDash";
+		columnSeries.tooltip.label.textAlign = "middle";
+
+		chart.data = arr;
+
+		chart.events.on("ready", function(e){
+			var bar_chart_loader = window.document.getElementById( domId + "_loader" );
+			bar_chart_loader.classList.remove("active");
+		});
+
+		return chart;
+	};
+
+	/*
+	 *
+	 */
+	
+	window.PIEL.PLANNING.drawVisualization = function( mapData ){
 		
-		if( !google.visualization || !google.visualization.arrayToDataTable )
+		if( !google.visualization || !google.visualization.arrayToDataTable || !google.visualization.GeoChart )
 		{
 			console.log( "Do not load google.visualization" );
-			++window.PIEL.REPORT.drawVisualization.load_cnt;
-			console.log( "-- window.PIEL.REPORT.drawVisualization.load_cnt : " + window.PIEL.REPORT.drawVisualization.load_cnt )
-			setTimeout(function(){ window.PIEL.REPORT.drawVisualization( mapData ); },2000);
+			++window.PIEL.PLANNING.drawVisualization.load_cnt;
+			console.log( "-- window.PIEL.PLANNING.drawVisualization.load_cnt : " + window.PIEL.PLANNING.drawVisualization.load_cnt )
+			setTimeout(function(){ window.PIEL.PLANNING.drawVisualization( mapData ); },2000);
 			return;
 			
 		}
@@ -253,12 +375,11 @@
 			return;
 		}
 	};
-	window.PIEL.REPORT.drawVisualization.load_cnt = 0;
-
+	window.PIEL.PLANNING.drawVisualization.load_cnt = 0;
 	/*
 	 * 월간집행통계작성;
 	 */
-	window.PIEL.REPORT.drawTable__monthly_marketing_plan = function( domId, data, target_month ){
+	window.PIEL.PLANNING.drawTable__monthly_marketing_plan = function( domId, data, target_month ){
 		
 		var tDom = window.document.getElementById( domId );
 
@@ -321,7 +442,7 @@
 	/*
 	 *
 	 */
-	window.PIEL.REPORT.drawCards__monthly_facebook_stastics = function( domId, data, target_month ){
+	window.PIEL.PLANNING.drawCards__monthly_facebook_stastics = function( domId, data, target_month ){
 		
 		var tDom = window.document.getElementById( domId );
 		var _tStr = `<div class="card"><div class="content"><div class="header" style="font-size : 12px;"><!=LABEL=!></div><div class="description" style="font-size : 20px;color:#000;"><b><!=VALUE=!></b></div></div></div>`;
@@ -353,7 +474,7 @@
 				if( use_label.indexOf( s ) != -1 )
 				{
 					_html = _tStr.replace( "<!=LABEL=!>", s  )
-						.replace( "<!=VALUE=!>", window.PIEL.REPORT.numberWithCommas( so ) );
+						.replace( "<!=VALUE=!>", window.PIEL.PLANNING.numberWithCommas( so ) );
 					r += _html + "\n"
 				}
 			}
@@ -365,7 +486,7 @@
 	//-------------------------------------------------------;
 	// 페이스북지역통계카드생성;
 	//-------------------------------------------------------;
-	window.PIEL.REPORT.drawCards__make_facebook_location_html = function( domId, data, target_month ){
+	window.PIEL.PLANNING.drawCards__make_facebook_location_html = function( domId, data, target_month ){
 
 		var tDom = window.document.getElementById( domId );
 		var _tStr = `<div class="card"><div class="content"><div class="header" style="font-size : 12px;"><!=city=!></div><div class="description" style="font-size : 11px;">도달 : <!=reach=!><br>노출 : <!=view=!></div></div></div>`;
@@ -378,8 +499,8 @@
 			io = data[ i ];
 
 			_html =  _tStr.replace( "<!=city=!>" , io[0].f )
-			.replace( "<!=reach=!>" , window.PIEL.REPORT.numberWithCommas( io[1] ) )
-			.replace( "<!=view=!>" , window.PIEL.REPORT.numberWithCommas ( io[2] ) );
+			.replace( "<!=reach=!>" , window.PIEL.PLANNING.numberWithCommas( io[1] ) )
+			.replace( "<!=view=!>" , window.PIEL.PLANNING.numberWithCommas ( io[2] ) );
 			r += _html + "\n";
 
 		}
@@ -390,7 +511,7 @@
 	/*
 	 * KOL카드생성
 	 */
-	window.PIEL.REPORT.drawCards__make_kols_html = function( domId, data, target_month ){
+	window.PIEL.PLANNING.drawCards__make_kols_html = function( domId, data, target_month ){
 		var gender_icon = {
 			"남" : "blue mars stroke vertical"
 			, "여" : "red venus"
@@ -431,7 +552,7 @@
 				.replace( "<!=YOUTUBE_ICON=!>", _youtube_icon_html )
 				.replace( "<!=INSTAGRAM_ICON=!>",_instagram_icon_html )
 				.replace( "<!=GENDER_ICON=!>", gender_icon[ io[ "성별" ] ] )
-				.replace( "<!=FOLLOWER=!>", window.PIEL.REPORT.numberWithCommas( io[ "팔로워" ] ) );
+				.replace( "<!=FOLLOWER=!>", window.PIEL.PLANNING.numberWithCommas( io[ "팔로워" ] ) );
 
 			r += _html + "\n"
 		}
@@ -442,7 +563,7 @@
 	//-------------------------------------------------------;
 	//구글전체통계 생성;
 	//-------------------------------------------------------;
-	window.PIEL.REPORT.drawTable__make_statistic_google_html = function( domId, o0, o1,  target_month ){
+	window.PIEL.PLANNING.drawTable__make_statistic_google_html = function( domId, data, target_month ){
 
 		var tDom = window.document.getElementById( domId );
 		var _tStr = `<table class="ui very compact celled table"><thead><!=TABLE_HEAD=!></thead><tbody><!=TABLE_BODY=!></tbody></table>`;	
@@ -455,8 +576,8 @@
 		var i = 0;
 		var _bg_check = -1;
 		_html0 += "<tr>"
-		for( s in o0 ){
-			so = o0[ s ];
+		for( s in data ){
+			so = data[ s ];
 				
 				var k,ko;
 				_html1 += "<tr>"
@@ -477,8 +598,8 @@
 					}
 
 				}
-				_html1 += "<td style='font-size:11px;'>" + o1[ s ][ "노출수" ] + "</td>\n";
-				_html1 += "<td style='font-size:11px;'>" + o1[ s ][ "클릭수" ] + "</td>\n";
+				_html1 += "<td style='font-size:11px;'>" + google_total_data[ s ][ "노출수" ] + "</td>\n";
+				_html1 += "<td style='font-size:11px;'>" + google_total_data[ s ][ "클릭수" ] + "</td>\n";
 				_html1 += "</tr>\n"
 				
 			++i;
@@ -495,7 +616,7 @@
 	//-------------------------------------------------------;
 	//구글 SEO 리스트카드생성;
 	//-------------------------------------------------------;
-	window.PIEL.REPORT.make_google_seo_html = function( arr ){
+	window.PIEL.PLANNING.make_google_seo_html = function( arr ){
 		
 		var _tStr = `
 		<div class="card">
@@ -561,11 +682,11 @@
 			var _view_col = "";
 
 			if( io[ "업데이트날짜" ] ) _update_col = update_col.replace( "<!=DATE=!>", io[ "업데이트날짜" ] )
-			if( io[ "조회건수" ] ) _view_col = view_col.replace( "<!=CNT_VIEW=!>", window.PIEL.REPORT.numberWithCommas( io[ "조회건수" ] ) )
-	//		if( io[ "클릭률" ] ) _click_col = click_col.replace( "<!=CNT_CLICK=!>", window.PIEL.REPORT.numberWithCommas( io[ "클릭률" ] ) )
-	//		if( io[ "댓글수" ] ) _comment_col = comment_col.replace( "<!=CNT_COMMENT=!>", window.PIEL.REPORT.numberWithCommas( io[ "댓글수" ] ) )
-	//		if( io[ "좋아요" ] ) _like_col = like_col.replace( "<!=CNT_LIKE=!>", window.PIEL.REPORT.numberWithCommas( io[ "좋아요" ] ) )
-	//		if( io[ "공유" ] ) _share_col = share_col.replace( "<!=CNT_SHARE=!>", window.PIEL.REPORT.numberWithCommas( io[ "공유" ] ) )
+			if( io[ "조회건수" ] ) _view_col = view_col.replace( "<!=CNT_VIEW=!>", window.PIEL.PLANNING.numberWithCommas( io[ "조회건수" ] ) )
+	//		if( io[ "클릭률" ] ) _click_col = click_col.replace( "<!=CNT_CLICK=!>", window.PIEL.PLANNING.numberWithCommas( io[ "클릭률" ] ) )
+	//		if( io[ "댓글수" ] ) _comment_col = comment_col.replace( "<!=CNT_COMMENT=!>", window.PIEL.PLANNING.numberWithCommas( io[ "댓글수" ] ) )
+	//		if( io[ "좋아요" ] ) _like_col = like_col.replace( "<!=CNT_LIKE=!>", window.PIEL.PLANNING.numberWithCommas( io[ "좋아요" ] ) )
+	//		if( io[ "공유" ] ) _share_col = share_col.replace( "<!=CNT_SHARE=!>", window.PIEL.PLANNING.numberWithCommas( io[ "공유" ] ) )
 
 			var thumb_url = thumb.replace( "<!=THUMBNAIL=!>", io[ "이미지" ] );
 			var iframe_url = "";
@@ -590,7 +711,7 @@
 				.replace( "<!=LINK=!>", io[ "해당링크" ] )
 				.replace( "<!=TITLE=!>", io[ "제목" ] )
 				.replace( "<!=TYPE=!>", io[ "타입" ] )
-				.replace( "<!=CATE_ICON=!>", window.PIEL.REPORT.thumnail_icon[ io[ "구분" ] ] )
+				.replace( "<!=CATE_ICON=!>", window.PIEL.PLANNING.thumnail_icon[ io[ "구분" ] ] )
 				.replace( "<!=DATE=!>", _update_col )
 				.replace( "<!=CNT_VIEW=!>", _view_col )
 				.replace( "<!=CNT_CLICK=!>", _click_col )
@@ -607,7 +728,7 @@
 	//-------------------------------------------------------;
 	// 구글 SEO 리스트생성;
 	//-------------------------------------------------------;
-	window.PIEL.REPORT.drawCards__google_seo_list = function( domId, data, target_month ){
+	window.PIEL.PLANNING.drawCards__google_seo_list = function( domId, data, target_month ){
 
 		var tDom = window.document.getElementById( domId );
 		if( !tDom ) return;
@@ -620,7 +741,7 @@
 				_html += '<div class="ui grid">';
 				_html += '<div class="sixteen wide column">';
 				_html += '<div class="ui four stackable cards">';
-				_html += window.PIEL.REPORT.make_google_seo_html( so )
+				_html += window.PIEL.PLANNING.make_google_seo_html( so )
 				_html += '</div>';
 				_html += '</div>';
 				_html += '</div>';
@@ -634,7 +755,7 @@
 	//-------------------------------------------------------;
 	//마케팅리스트카드생성;
 	//-------------------------------------------------------;
-	window.PIEL.REPORT.make_marketing_list_html = function( arr ){
+	window.PIEL.PLANNING.make_marketing_list_html = function( arr ){
 		
 		var _tStr = `
 		<div class="card">
@@ -700,11 +821,11 @@
 			var _view_col = "";
 
 			if( io[ "업데이트날짜" ] ) _update_col = update_col.replace( "<!=DATE=!>", io[ "업데이트날짜" ] )
-			if( io[ "조회건수" ] ) _view_col = view_col.replace( "<!=CNT_VIEW=!>", window.PIEL.REPORT.numberWithCommas( io[ "조회건수" ] ) )
-			if( io[ "클릭률" ] ) _click_col = click_col.replace( "<!=CNT_CLICK=!>", window.PIEL.REPORT.numberWithCommas( io[ "클릭률" ] ) )
-			if( io[ "댓글수" ] ) _comment_col = comment_col.replace( "<!=CNT_COMMENT=!>", window.PIEL.REPORT.numberWithCommas( io[ "댓글수" ] ) )
-			if( io[ "좋아요" ] ) _like_col = like_col.replace( "<!=CNT_LIKE=!>", window.PIEL.REPORT.numberWithCommas( io[ "좋아요" ] ) )
-			if( io[ "공유" ] ) _share_col = share_col.replace( "<!=CNT_SHARE=!>", window.PIEL.REPORT.numberWithCommas( io[ "공유" ] ) )
+			if( io[ "조회건수" ] ) _view_col = view_col.replace( "<!=CNT_VIEW=!>", window.PIEL.PLANNING.numberWithCommas( io[ "조회건수" ] ) )
+			if( io[ "클릭률" ] ) _click_col = click_col.replace( "<!=CNT_CLICK=!>", window.PIEL.PLANNING.numberWithCommas( io[ "클릭률" ] ) )
+			if( io[ "댓글수" ] ) _comment_col = comment_col.replace( "<!=CNT_COMMENT=!>", window.PIEL.PLANNING.numberWithCommas( io[ "댓글수" ] ) )
+			if( io[ "좋아요" ] ) _like_col = like_col.replace( "<!=CNT_LIKE=!>", window.PIEL.PLANNING.numberWithCommas( io[ "좋아요" ] ) )
+			if( io[ "공유" ] ) _share_col = share_col.replace( "<!=CNT_SHARE=!>", window.PIEL.PLANNING.numberWithCommas( io[ "공유" ] ) )
 
 			var thumb_url = thumb.replace( "<!=THUMBNAIL=!>", io[ "이미지" ] );
 			var iframe_url = "";
@@ -729,7 +850,7 @@
 				.replace( "<!=LINK=!>", io[ "해당링크" ] )
 				.replace( "<!=TITLE=!>", io[ "제목" ] )
 				.replace( "<!=TYPE=!>", io[ "타입" ] )
-				.replace( "<!=CATE_ICON=!>", window.PIEL.REPORT.thumnail_icon[ io[ "구분" ] ] )
+				.replace( "<!=CATE_ICON=!>", window.PIEL.PLANNING.thumnail_icon[ io[ "구분" ] ] )
 				.replace( "<!=DATE=!>", _update_col )
 				.replace( "<!=CNT_VIEW=!>", _view_col )
 				.replace( "<!=CNT_CLICK=!>", _click_col )
@@ -746,7 +867,7 @@
 	//-------------------------------------------------------;
 	// 광고집행리스트생성;
 	//-------------------------------------------------------;
-	window.PIEL.REPORT.drawCards__make_marketing_list = function( domId, data, target_month ){
+	window.PIEL.PLANNING.drawCards__make_marketing_list = function( domId, data, target_month ){
 
 		var tDom = window.document.getElementById( domId );
 		if( !tDom ) return;
@@ -759,7 +880,7 @@
 				_html += '<div class="ui grid">';
 				_html += '<div class="sixteen wide column">';
 				_html += '<div class="ui four stackable cards">';
-				_html += window.PIEL.REPORT.make_marketing_list_html( so )
+				_html += window.PIEL.PLANNING.make_marketing_list_html( so )
 				_html += '</div>';
 				_html += '</div>';
 				_html += '</div>';
@@ -773,7 +894,7 @@
 	//-------------------------------------------------------;
 	//마케팅집행 통계 생성;
 	//-------------------------------------------------------;
-	window.PIEL.REPORT.drawCards__make_ads_total_statistic = function( domId, data, target_month ){
+	window.PIEL.PLANNING.drawCards__make_ads_total_statistic = function( domId, data, target_month ){
 		
 		var tDom = window.document.getElementById( domId );
 		var _tStr = `<div class="card"><div class="content"><div class="header" style="font-size : 12px;"><!=LABEL=!></div><div class="description" style="font-size : 20px;color:#000;"><b><!=VALUE=!></b></div></div></div>`;
@@ -786,22 +907,214 @@
 		for( s in data ){
 			so = data[ s ];
 			_html = _tStr.replace( "<!=LABEL=!>", s  )
-				.replace( "<!=VALUE=!>", window.PIEL.REPORT.numberWithCommas( so )  );
+				.replace( "<!=VALUE=!>", window.PIEL.PLANNING.numberWithCommas( so )  );
 			r += _html + "\n"
 		}
+		tDom.innerHTML = r;
+		return;
+	};
+
+	//-------------------------------------------------------;
+	// 월별통계테이블생성;
+	//-------------------------------------------------------;
+	window.PIEL.PLANNING.drawTable__make_monthly_table_html = function( domId, data, target_month ){
+		var tDom = window.document.getElementById( domId );
+		var _tStr = `<table class="ui very compact celled table"><thead><!=TABLE_HEAD=!></thead><tbody><!=TABLE_BODY=!></tbody></table>`;	
+		if( !tDom ) return;
+
+		var i = 0,iLen = data.length,io;
+		var _html0 = "";
+		var _html1 = "";
+		var r = "";
+		var _bg_check = -1;
+
+		_html0 += "<tr>"
+		for(;i<iLen;i++){
+			io = data[ i ];
+			
+			if( i == 0 ){
+				_bg_check = io.indexOf( target_month + "월" );
+				var _tidx = 0;
+				io.forEach(function(item){
+					if( _tidx == 0 )
+					{
+						_html0 += "<th style='width:18%;font-weight: 400;font-size: 12px;'>" + item + "</th>\n";
+					}
+					else if( _tidx == 1 ){
+						_html0 += "<th style='width:26%;font-weight: 400;font-size: 12px;'>" + item + "</th>\n";
+					}
+					else
+					{
+						if( _bg_check == _tidx ) _html0 += "<th style='width:8%;background-color : red;color:#fff;font-weight: 400;font-size: 12px;'>" + item + "</th>\n";
+						else _html0 += "<th style='width:8%;font-weight: 400;font-size: 12px;'>" + item + "</th>\n";
+
+					}
+					++_tidx;
+				})
+				_html0 += "</tr>\n"
+			}
+			else
+			{
+				_html1 += "<tr>"
+				var _tidx = 0;
+				io.forEach(function(item){ 
+
+					if( _bg_check == _tidx ) _html1 += "<td style='font-size:11px;background-color : red;color:#fff;'>" + item + "</td>\n";
+					else if( ( _tidx + 1 ) == io.length )
+					{
+						_html1 += "<td style='font-size:11px;background-color : yellow;color:red;'>" + item + "</td>\n"; 
+					}
+					else _html1 += "<td style='font-size:11px;'>" + item + "</td>\n"; 
+					++_tidx;
+				})
+				_html1 += "</tr>\n"
+			}
+		}
+
+		_html0 += "</tr>\n"
+		
+		r = _tStr.replace( "<!=TABLE_HEAD=!>", _html0 ).replace( "<!=TABLE_BODY=!>", _html1 )
+		tDom.innerHTML = r;
+		return;
+	};
+
+
+		
+
+	//-------------------------------------------------------;
+	// 월별비용테이블생성;
+	//-------------------------------------------------------;
+	window.PIEL.PLANNING.drawTable__make_monthly_cost_table_html = function( domId, data, target_month ){
+		var tDom = window.document.getElementById( domId );
+		var _tStr = `<table class="ui very compact celled table"><thead><!=TABLE_HEAD=!></thead><tbody><!=TABLE_BODY=!></tbody></table>`;	
+		if( !tDom ) return;
+
+		var i = 0,iLen = data.length,io;
+		var _html0 = "";
+		var _html1 = "";
+		var r = "";
+		var _bg_check = -1;
+		_html0 += "<tr>"
+		for(;i<iLen;i++){
+			io = data[ i ];
+			
+			if( i == 0 ){
+				_bg_check = io.indexOf( target_month + "월" );
+				var _tidx = 0;
+				io.forEach(function(item){
+					if( _tidx == 0 )
+					{
+						_html0 += "<th style='width:18%;font-weight: 400;font-size: 12px;'>" + item + "</th>\n";
+					}
+					else if( _tidx == 1 ){
+						_html0 += "<th style='width:26%;font-weight: 400;font-size: 12px;'>" + item + "</th>\n";
+					}
+					else
+					{
+						if( _bg_check == _tidx ) _html0 += "<th style='width:8%;background-color : red;color:#fff;font-weight: 400;font-size: 12px;'>" + item + "</th>\n";
+						else _html0 += "<th style='width:8%;font-weight: 400;font-size: 12px;'>" + item + "</th>\n";
+
+					}
+					++_tidx;
+				})
+				_html0 += "</tr>\n"
+			}
+			else
+			{
+				if( ( i + 1 ) == iLen ) _html1 += "<tr style='font-size:11px;background-color : yellow;color:red;'>";
+				else _html1 += "<tr>";
+
+				var _tidx = 0;
+				io.forEach(function(item){ 
+
+					if( _bg_check == _tidx ) _html1 += "<td style='font-size:11px;background-color : red;color:#fff;'>" + item + "</td>\n";
+					else if( ( _tidx + 1 ) == io.length )
+					{
+						_html1 += "<td style='font-size:11px;background-color : yellow;color:red;'>" + item + "</td>\n"; 
+					}
+					else
+					{
+						_html1 += "<td style='font-size:11px;'>" + item + "</td>\n";	
+					}
+					++_tidx;
+					
+				})
+
+				_html1 += "</tr>\n"
+			}
+		}
+		r = _tStr.replace( "<!=TABLE_HEAD=!>", _html0 ).replace( "<!=TABLE_BODY=!>", _html1 )
+		tDom.innerHTML = r;
+		return;
+	};
+
+	//-------------------------------------------------------;
+	// 전체비용테이블생성;
+	//-------------------------------------------------------;
+	window.PIEL.PLANNING.drawTable__make_total_cost_table_html = function( domId, data, target_month ){
+	/*
+	<p style="text-align: center;"><span style="font-size: 14px; color: rgb(255, 255, 255);">총금액</span></p>
+	<p style="text-align: center;"><span style="color: rgb(255, 255, 255);"><span style="font-size: 20px;"><s>₩30,040,000</s></span></span></p>
+	<p style="text-align: center;"><br></p>
+	<p style="text-align: center;"><span style="font-size: 14px; color: rgb(255, 255, 255);">총 금액( 할인적용 - 부가세별도 )&nbsp;</span></p>
+	<p style="text-align: center;"><span style="font-size: 30px; color: rgb(255, 255, 255);">₩30,000,000&nbsp;</span></p>
+	*/
+		var tDom = window.document.getElementById( domId );
+		
+		if( !tDom ) return;
+		var r = "";
+		
+		var _header = [];
+		var _to = {};
+		var i = 0,iLen = data.length,io;
+		for(;i<iLen;i++){
+
+			io = data[ i ];
+			if( i == 0 )
+			{
+				io.forEach(function(item){ _header.push( item ) })
+			}
+			else
+			{
+				var _idx = 0;
+				io.forEach(function(item){ 
+					_to[ _header[ _idx ] ] = item;
+					++_idx;
+				})
+			}
+		}
+
+		var s,so;
+		var _idx = 0;
+		for( s in _to ){
+			so = _to[ s ];
+			if( _idx == 0 ){
+				r += '<p style="text-align: center;"><span style="font-size: 14px; color: rgb(255, 255, 255);">' + s + '</span></p>';
+				r += '<p style="text-align: center;"><span style="color: rgb(255, 255, 255);"><span style="font-size: 20px;"><s>' + so + '</s></span></span></p>';
+				r += '<p style="text-align: center;"><br></p>';
+			}
+			else
+			{
+				r += '<p style="text-align: center;"><span style="font-size: 14px; color: rgb(255, 255, 255);">' + s + '&nbsp;</span></p>';			
+				r += '<p style="text-align: center;"><span style="font-size: 30px; color: yellow;">' + so + '</span></p>';	
+			}
+			
+			++_idx;
+		}
+
 		tDom.innerHTML = r;
 		return;
 	};
 	/*
 	 * 숫자에3자리마다 콤마를 직어주는 함수;
 	 */
-	window.PIEL.REPORT.numberWithCommas = function(x) {
+	window.PIEL.PLANNING.numberWithCommas = function(x) {
 		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
 	/*
 	 *
 	 */
-	window.PIEL.REPORT.pad = function(n, width){
+	window.PIEL.PLANNING.pad = function(n, width){
 	  n = n + '';
 	  return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
 	}
